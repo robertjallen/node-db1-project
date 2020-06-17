@@ -36,7 +36,25 @@ router.get("/", async (req, res, next) => {
 		next(err)
 	}
 })
+//====================
+//      UPDATE
+//====================
+router.put("/:id", async (req, res, next) => {
+	try {
+		const payload = {
+			name: req.body.name,
+			budget: req.body.budget,
+		}
 
+		// translates to `UPDATE "messages" SET ? = ? WHERE "id" = ?;`
+		await db("accounts").update(payload).where("id", req.params.id)
+		const message = await db.first("*").from("accounts").where("id", req.params.id)
+
+		res.json(message)
+	} catch (err) {
+		next(err)
+	}
+})
 
 
 
