@@ -76,6 +76,21 @@ router.put("/:id", async (req, res, next) => {
 	}
 })
 
+//====================
+//      DELETE
+//====================
+router.delete("/:id", async (req, res, next) => {
+	try {
+		// translates to `DELETE FROM "messages" WHERE "id" = ?;`
+		await db("accounts").where("id", req.params.id).del()
+		// since we no longer have a resource to return,
+		// just send a 204 which means "success, but no response data is being sent back"
+		res.status(204).end()
+	} catch (err) {
+		next(err)
+	}
+})
+
 
 
 module.exports = router;
