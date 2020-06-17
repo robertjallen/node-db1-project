@@ -36,6 +36,26 @@ router.get("/", async (req, res, next) => {
 		next(err)
 	}
 })
+
+// GET BY ID
+
+router.get("/:id", async (req, res, next) => {
+	try {
+		// translates to `SELECT * FROM "messages" WHERE "id" = ? LIMIT 1;`
+		// descructure the result since we only care about the first index of the array
+		const [account] = await db
+			.select("*")
+			.from("accounts")
+			.where("id", req.params.id)
+			// make sure we're only getting a single result,
+			// since we're destructuring the array above
+			.limit(1)
+
+		res.json(account)
+	} catch (err) {
+		next(err)
+	}
+})
 //====================
 //      UPDATE
 //====================
